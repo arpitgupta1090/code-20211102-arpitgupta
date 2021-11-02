@@ -19,8 +19,28 @@ input_data = [
 ]
 
 
-person1 = BMICalculator.create_from_raw_data(input_data[0])
+def add_bmi_category__health_risk(data_list, table):
 
-print(person1.calculate_bmi())
-print(person1.bmi_category_health_risk(table1))
+    for data in data_list:
+        obj = BMICalculator.create_from_raw_data(data)
+        bmi = obj.calculate_bmi()
+        category, health_risk = obj.bmi_category_health_risk(table)
+        data["BMI"] = bmi
+        data["BMI Category"] = category
+        data["Health Risk"] = health_risk
+
+    return data_list
+
+
+def number_of_overweight(data_list, table):
+    added_list = add_bmi_category__health_risk(data_list, table)
+    overweight_list = [person for person in added_list if person["BMI Category"] == "Overweight"]
+    return len(overweight_list)
+
+
+if __name__ == "__main__":
+
+    new_list = add_bmi_category__health_risk(input_data, table1)
+    print(new_list)
+    print(number_of_overweight(input_data, table1))
 
