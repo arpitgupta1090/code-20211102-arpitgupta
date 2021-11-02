@@ -1,9 +1,15 @@
+from exception import HeightNullError, WeightNullError, HeightLessThanZeroError, WeightLessThanZeroError
+
+
 class BMICalculator:
 
     def __init__(self, gender, height, weight):
         self.gender = gender
-        self.height = height / 100
+        self.height = height
         self.weight = weight
+
+        self.__input_data_validator()
+        self.height = self.height / 100
 
     @classmethod
     def create_from_raw_data(cls, row):
@@ -24,3 +30,12 @@ class BMICalculator:
             elif bmi >= table[-1].get("BMI Range"):
                 return table[-1].get("BMI Category"), table[-1].get("Health risk")
 
+    def __input_data_validator(self):
+        if not self.height:
+            raise HeightNullError
+        if self.height <= 0:
+            raise HeightLessThanZeroError
+        if not self.weight:
+            raise WeightNullError
+        if self.weight <= 0:
+            raise WeightLessThanZeroError
